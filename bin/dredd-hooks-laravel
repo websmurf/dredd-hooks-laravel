@@ -49,7 +49,7 @@ $options = getopt('', [
 
 // Second argument is the single kernel file
 $dreddKernelPath = $argv[1];
-$parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+$parser = (new ParserFactory)->createForNewestSupportedVersion();
 
 try {
     $statements = $parser->parse(file_get_contents($dreddKernelPath));
@@ -60,7 +60,7 @@ try {
 
 try {
     if ($statements[0] instanceof  PhpParser\Node\Stmt\Namespace_) {
-        $kernelClass = implode('\\', $statements[0]->name->parts);
+        $kernelClass = implode('\\', $statements[0]->name->getParts());
         foreach ($statements[0]->stmts as $statement) {
             if ($statement instanceof PhpParser\Node\Stmt\Class_) {
                 $kernelClass .= '\\' . $statement->name;
